@@ -156,11 +156,15 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .section{display:none;}
 .section.visible{display:block;}
 
+.td-cat{white-space:nowrap;}
+.td-merchant-sub{display:none;}
 @media(max-width:600px){
   .grid2{grid-template-columns:1fr;}
   .stats-row{grid-template-columns:1fr 1fr;}
   .td-resp{display:none;}
   .td-paid{display:none;}
+  .td-cat{display:none;}
+  .td-merchant-sub{display:flex;}
   .split-row{flex-direction:column;}
   .owed-right{gap:10px;}
 }
@@ -348,7 +352,7 @@ function renderTxTable(txns, title) {
   const rows = txns.map(t => {
     const color = CAT_COLORS[t.category]||'#64748b', bg = CAT_BG[t.category]||'#1a1a1a';
     const respBadge = t.yours ? `<span class="resp-badge resp-yours">YOURS</span>` : `<span class="resp-badge resp-dad">DAD</span>`;
-    const paidBadge = t.paid ? `<span class="paid-badge paid-yes">PAID ✓</span>` : `<span class="paid-badge paid-no">OWES</span>`;
+    const paidBadge = !t.yours ? `<span class="na-badge">—</span>` : t.paid ? `<span class="paid-badge paid-yes">PAID ✓</span>` : `<span class="paid-badge paid-no">OWES</span>`;
     const amtClass = t.yours ? 'td-amount' : 'td-amount dad-amt';
     const d = t.date.split('/');
     const dateStr = `${MONTHS[parseInt(d[0])-1]} ${parseInt(d[1])}`;
@@ -368,6 +372,7 @@ function renderTxTable(txns, title) {
       <thead><tr>
         <th>Date</th>
         <th>Merchant</th>
+        <th class="td-cat">Category</th>
         <th class="td-resp" style="text-align:center">Who Pays</th>
         <th class="td-paid" style="text-align:center">Paid Back?</th>
         <th style="text-align:right">Amount</th>
