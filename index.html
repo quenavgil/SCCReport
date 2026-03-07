@@ -6,23 +6,23 @@
 <title>Saliba · Card Report</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1118;--card:#151b25;--card2:#1a2130;--border:#242d3e;--accent:#f5c842;--blue:#4d8ef0;--red:#e05c7a;--green:#3ecf8e;--purple:#a78bfa;--orange:#fb8c4b;--teal:#2dd4bf;--text:#dde3ef;--muted:#64748b;--muted2:#3d4d63;}
+:root{--bg:#f7f7f7;--card:#ffffff;--card2:#f2f2f2;--border:#e5e5e5;--accent:#111111;--blue:#111111;--red:#111111;--green:#111111;--purple:#111111;--orange:#111111;--teal:#111111;--text:#111111;--muted:#888888;--muted2:#aaaaaa;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:13px;line-height:1.5;padding:28px 16px 80px;}
 .page{max-width:900px;margin:0 auto;}
 
 /* HEADER */
 .header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px;}
-.header h1{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--accent);letter-spacing:-.2px;}
+.header h1{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;font-weight:600;color:#111111;letter-spacing:-.2px;}
 .header p{font-size:.7rem;color:var(--muted);margin-top:3px;font-weight:300;}
 .card-pill{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:5px;padding:5px 10px;letter-spacing:1px;}
-.card-pill span{color:var(--blue);font-weight:600;}
+.card-pill span{color:#111;font-weight:600;}
 
 /* YEAR TABS */
 .year-nav{display:flex;align-items:center;gap:8px;margin-bottom:20px;}
 .year-nav .label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-right:4px;}
 .ytab{font-family:'IBM Plex Mono',monospace;font-size:.75rem;font-weight:600;padding:6px 18px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
-.ytab.active{background:var(--accent);color:#000;border-color:var(--accent);}
+.ytab.active{background:#111;color:#fff;border-color:#111;}
 .ytab:hover:not(.active){border-color:var(--muted2);color:var(--text);}
 
 /* MONTH NAV */
@@ -30,36 +30,36 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .mtab{font-family:'IBM Plex Mono',monospace;font-size:.65rem;font-weight:500;padding:4px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.3px;}
 .mtab.active{background:var(--card2);color:var(--text);border-color:var(--muted2);}
 .mtab.has-data{color:var(--text);}
-.mtab.active.has-data{background:var(--accent);color:#000;border-color:var(--accent);}
+.mtab.active.has-data{background:#111;color:#fff;border-color:#111;}
 .mtab:hover:not(.active){border-color:var(--muted2);color:var(--text);}
 .mtab.no-data{opacity:.3;cursor:default;}
 
 /* OWED BANNER */
-.owed-banner{background:linear-gradient(135deg,#1c1208,#18121e);border:1px solid #3a2a10;border-radius:8px;padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.owed-banner{background:#ffffff;border:1px solid #e5e5e5;border-radius:8px;padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
 .owed-left{display:flex;align-items:center;gap:10px;}
 .owed-icon{font-size:1.1rem;}
 .owed-label{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
-.owed-amount{font-family:'IBM Plex Mono',monospace;font-size:1.4rem;font-weight:600;color:var(--accent);line-height:1;margin-top:2px;}
+.owed-amount{font-family:'IBM Plex Mono',monospace;font-size:1.4rem;font-weight:600;color:#2563eb;line-height:1;margin-top:2px;}
 .owed-right{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
 .owed-stat{text-align:right;}
 .owed-stat-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
 .owed-stat-val{font-family:'IBM Plex Mono',monospace;font-size:.8rem;font-weight:600;margin-top:1px;}
 .status-pill{font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:600;padding:3px 9px;border-radius:99px;letter-spacing:.5px;white-space:nowrap;}
-.status-pill.unpaid{background:#2a1008;color:var(--orange);border:1px solid #3a1a08;}
-.status-pill.paid-full{background:#0c1f12;color:var(--green);border:1px solid #1a3d22;}
-.status-pill.partial{background:#1a1408;color:var(--accent);border:1px solid #3a2a10;}
+.status-pill.unpaid{background:#fff;color:#111;border:1px solid #ddd;}
+.status-pill.paid-full{background:#fff;color:#111;border:1px solid #ddd;}
+.status-pill.partial{background:#f2f2f2;color:#555;border:1px solid #e5e5e5;}
 
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 13px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 13px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
 .stat-label{font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:500;}
 .stat-value{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;font-weight:600;margin-top:3px;line-height:1;}
 .stat-sub{font-size:.6rem;color:var(--muted);margin-top:2px;}
 
 /* GRID */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:15px 16px;}
-.card-title{font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:15px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.card-title{font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-bottom:12px;}
 
 /* DONUT */
 .donut-wrap{display:flex;align-items:center;gap:14px;}
@@ -87,18 +87,18 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .split-half-amount{font-family:'IBM Plex Mono',monospace;font-size:1.1rem;font-weight:600;line-height:1;}
 .split-half-sub{font-size:.62rem;color:var(--muted);margin-top:3px;}
 .split-bar-wrap{margin-top:10px;}
-.split-bar-track{background:var(--border);height:6px;border-radius:99px;overflow:hidden;display:flex;}
-.split-bar-his{height:100%;background:var(--red);transition:width .6s cubic-bezier(.16,1,.3,1);}
-.split-bar-dad{height:100%;background:var(--blue);}
+.split-bar-track{background:#eee;height:6px;border-radius:99px;overflow:hidden;display:flex;}
+.split-bar-his{height:100%;background:#333;transition:width .6s cubic-bezier(.16,1,.3,1);}
+.split-bar-dad{height:100%;background:#ddd;}
 
 /* TX TABLE */
-.tx-card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:15px 16px;margin-bottom:10px;}
+.tx-card{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:15px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
 .legend-key{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;align-items:center;}
 .legend-key-item{display:flex;align-items:center;gap:4px;font-size:.63rem;color:var(--muted);}
 .tx-table{width:100%;border-collapse:collapse;}
 .tx-table thead th{font-family:'IBM Plex Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted2);text-align:left;padding:0 7px 7px 7px;border-bottom:1px solid var(--border);white-space:nowrap;}
 .tx-table tbody tr:hover{background:var(--card2);}
-.tx-table td{padding:5px 7px;font-size:.7rem;border-bottom:1px solid #151e2a;vertical-align:middle;}
+.tx-table td{padding:5px 7px;font-size:.7rem;border-bottom:1px solid var(--border);vertical-align:middle;}
 .tx-table tbody tr:last-child td{border-bottom:none;}
 .td-date{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--muted);white-space:nowrap;}
 .td-merchant{font-weight:500;}
@@ -107,27 +107,27 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .td-amount{font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;text-align:right;color:var(--red);}
 .td-amount.dad-amt{color:var(--muted);}
 .resp-badge{font-size:.56rem;padding:2px 6px;border-radius:3px;font-weight:600;white-space:nowrap;}
-.resp-yours{background:#1a2a18;color:var(--green);border:1px solid #253d22;}
-.resp-dad{background:#1a1a2a;color:var(--blue);border:1px solid #252535;}
+.resp-yours{background:#f2f2f2;color:#333;border:1px solid #ddd;}
+.resp-dad{background:#f2f2f2;color:#333;border:1px solid #ddd;}
 .paid-badge{font-size:.56rem;padding:2px 6px;border-radius:3px;font-weight:600;}
-.paid-yes{background:#0c1f12;color:var(--green);border:1px solid #1a3d22;}
-.paid-no{background:#1e0e0a;color:var(--orange);border:1px solid #3a1a10;}
-.na-badge{font-size:.56rem;padding:2px 6px;border-radius:3px;font-weight:500;background:#1a1a1a;color:var(--muted2);border:1px solid var(--border);}
+.paid-yes{background:#f2f2f2;color:#555;border:1px solid #bbf7d0;}
+.paid-no{background:#f2f2f2;color:#2563eb;border:1px solid #ddd;}
+.na-badge{font-size:.56rem;padding:2px 6px;border-radius:3px;font-weight:500;background:#f8fafc;color:var(--muted2);border:1px solid var(--border);}
 
 /* YEAR OVERVIEW */
 .year-overview{margin-bottom:10px;}
 .monthly-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:10px;}
 .month-tile{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:12px 13px;cursor:pointer;transition:all .15s;}
 .month-tile:hover{border-color:var(--muted2);}
-.month-tile.active-tile{border-color:var(--accent);background:#1a1a0e;}
+.month-tile.active-tile{border-color:#111;background:#f7f7f7;}
 .month-tile.no-data-tile{opacity:.35;cursor:default;}
 .tile-month{font-family:'IBM Plex Mono',monospace;font-size:.65rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
 .tile-amount{font-family:'IBM Plex Mono',monospace;font-size:1rem;font-weight:600;color:var(--accent);margin-top:4px;line-height:1;}
 .tile-sub{font-size:.6rem;color:var(--muted);margin-top:2px;}
 .tile-badge{display:inline-block;font-size:.55rem;padding:1px 5px;border-radius:3px;margin-top:4px;font-weight:600;}
-.tile-paid{background:#0c1f12;color:var(--green);}
-.tile-unpaid{background:#1e0e0a;color:var(--orange);}
-.tile-partial{background:#1a1408;color:var(--accent);}
+.tile-paid{background:#f2f2f2;color:#555;}
+.tile-unpaid{background:#f2f2f2;color:#555;}
+.tile-partial{background:#f2f2f2;color:#555;}
 
 /* YEAR TOTALS */
 .year-totals{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:15px 16px;margin-bottom:10px;}
@@ -142,12 +142,12 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .summary-item{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border-radius:6px;background:var(--card2);}
 .summary-item-icon{font-size:.9rem;flex-shrink:0;margin-top:1px;}
 .summary-item-text{font-size:.72rem;line-height:1.5;color:var(--text);}
-.summary-item-text strong{color:var(--accent);font-weight:600;}
-.summary-item-text .dad-note{color:var(--blue);}
-.summary-item.warn{border-left:2px solid var(--orange);}
-.summary-item.good{border-left:2px solid var(--green);}
-.summary-item.info{border-left:2px solid var(--blue);}
-.summary-item.flag{border-left:2px solid var(--red);}
+.summary-item-text strong{color:#111;font-weight:700;}
+.summary-item-text .dad-note{color:#555;}
+.summary-item.warn{border-left:2px solid #ccc;}
+.summary-item.good{border-left:2px solid #ccc;}
+.summary-item.info{border-left:2px solid #ccc;}
+.summary-item.flag{border-left:2px solid #ccc;}
 
 /* EMPTY STATE */
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:.8rem;}
@@ -167,7 +167,7 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 
 /* TX ROW LIST */
 .tx-list{display:flex;flex-direction:column;}
-.tx-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid #1a2235;}
+.tx-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--border);}
 .tx-row:last-child{border-bottom:none;}
 .tx-row-left{flex:1;min-width:0;}
 .tx-row-date{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:2px;}
@@ -216,10 +216,10 @@ const CAT_COLORS = {
   Postage:'#fb923c', Home:'#a3e635', Other:'#64748b'
 };
 const CAT_BG = {
-  Meals:'#2a1f08', Travel:'#0d1428', Gas:'#0d1e14', Groceries:'#0d1428',
-  Subscriptions:'#1c1535', Clothing:'#2a1225', Taxes:'#1e1008',
-  Entertainment:'#0d2020', Medical:'#0c1e2a', Vehicle:'#1a1e28',
-  Postage:'#201508', Home:'#141e08', Other:'#1a1a1a'
+  Meals:'#f2f2f2', Travel:'#f2f2f2', Gas:'#f2f2f2', Groceries:'#f2f2f2',
+  Subscriptions:'#f2f2f2', Clothing:'#f2f2f2', Taxes:'#f2f2f2',
+  Entertainment:'#f2f2f2', Medical:'#f2f2f2', Vehicle:'#f2f2f2',
+  Postage:'#f2f2f2', Home:'#f2f2f2', Other:'#f2f2f2'
 };
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -284,9 +284,9 @@ function renderDonut(cats, total, label) {
   });
   return `<div class="donut-wrap">
     <svg width="100" height="100" viewBox="0 0 100 100" style="flex-shrink:0">
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#1e2535" stroke-width="14"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#eeeeee" stroke-width="14"/>
       ${slices}
-      <text x="50" y="47" text-anchor="middle" fill="#dde3ef" font-family="IBM Plex Mono" font-size="8" font-weight="600">${label.toUpperCase()}</text>
+      <text x="50" y="47" text-anchor="middle" fill="#111111" font-family="IBM Plex Mono" font-size="8" font-weight="600">${label.toUpperCase()}</text>
       <text x="50" y="57" text-anchor="middle" fill="#64748b" font-family="IBM Plex Sans" font-size="6">${currentYear}</text>
     </svg>
     <div class="donut-legend">${legendItems}</div>
@@ -329,15 +329,15 @@ function renderOwedBanner(stats, label) {
     <div class="owed-right">
       <div class="owed-stat">
         <div class="owed-stat-label">Your Charges</div>
-        <div class="owed-stat-val" style="color:var(--text)">${fmt(stats.yoursTotal)}</div>
+        <div class="owed-stat-val" style="color:#111">${fmt(stats.yoursTotal)}</div>
       </div>
       <div class="owed-stat">
         <div class="owed-stat-label">Dad's Charges</div>
-        <div class="owed-stat-val" style="color:var(--blue)">${fmt(stats.dadTotal)}</div>
+        <div class="owed-stat-val" style="color:#111">${fmt(stats.dadTotal)}</div>
       </div>
       <div class="owed-stat">
         <div class="owed-stat-label">Paid Back</div>
-        <div class="owed-stat-val" style="color:var(--green)">${fmt(paid)}</div>
+        <div class="owed-stat-val" style="color:#111">${fmt(paid)}</div>
       </div>
       <div class="owed-stat">
         <div class="owed-stat-label">Status</div>
@@ -353,7 +353,7 @@ function renderTxTable(txns, title) {
     const color = CAT_COLORS[t.category]||'#64748b', bg = CAT_BG[t.category]||'#1a1a1a';
     const respBadge = t.yours ? `<span class="resp-badge resp-yours">YOURS</span>` : `<span class="resp-badge resp-dad">DAD</span>`;
     const paidBadge = !t.yours ? `<span class="na-badge">—</span>` : t.paid ? `<span class="paid-badge paid-yes">PAID ✓</span>` : `<span class="paid-badge paid-no">OWED</span>`;
-    const amtColor = t.yours ? 'var(--accent)' : 'var(--muted)';
+    const amtColor = t.yours ? '#111' : '#aaa';
     const d = t.date.split('/');
     const dateStr = `${MONTHS[parseInt(d[0])-1]} ${parseInt(d[1])}`;
     return `<div class="tx-row">
@@ -495,23 +495,23 @@ function renderMonthView(year, month) {
     ${renderOwedBanner(stats, `${mLabel} ${year}`)}
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-label">Your Total</div>
-        <div class="stat-value" style="color:var(--accent)">${fmt(stats.yoursTotal)}</div>
+        <div class="stat-label">Total Spent</div>
+        <div class="stat-value" style="color:#111">${fmt(stats.total)}</div>
+        <div class="stat-sub">${txns.length} transactions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Your Charges</div>
+        <div class="stat-value" style="color:#111">${fmt(stats.yoursTotal)}</div>
         <div class="stat-sub">${stats.yours.length} transactions</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Dad's Total</div>
-        <div class="stat-value" style="color:var(--blue)">${fmt(stats.dadTotal)}</div>
+        <div class="stat-label">Dad's Charges</div>
+        <div class="stat-value" style="color:#111">${fmt(stats.dadTotal)}</div>
         <div class="stat-sub">${stats.dad.length} transactions</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Paid Back</div>
-        <div class="stat-value" style="color:var(--green)">${fmt(stats.yoursPaid)}</div>
-        <div class="stat-sub">of ${fmt(stats.yoursTotal)}</div>
-      </div>
-      <div class="stat-card">
         <div class="stat-label">Still Owed</div>
-        <div class="stat-value" style="color:${stats.owes>0?'var(--orange)':'var(--green)'}">${fmt(Math.max(0,stats.owes))}</div>
+        <div class="stat-value" style="color:#2563eb">${fmt(Math.max(0,stats.owes))}</div>
         <div class="stat-sub">${stats.owes<=0?'All settled!':'to dad'}</div>
       </div>
     </div>
@@ -520,13 +520,13 @@ function renderMonthView(year, month) {
       <div class="card-title">Who Pays What · ${mLabel}</div>
       <div class="split-row">
         <div class="split-half">
-          <div class="split-half-label" style="color:var(--red)">Saliba's Charges</div>
-          <div class="split-half-amount" style="color:var(--accent)">${fmt(stats.yoursTotal)}</div>
+          <div class="split-half-label" style="color:#555">Your Charges</div>
+          <div class="split-half-amount" style="color:#111">${fmt(stats.yoursTotal)}</div>
           <div class="split-half-sub">${yoursPct}% of total · ${stats.yours.length} txns</div>
         </div>
         <div class="split-half">
-          <div class="split-half-label" style="color:var(--blue)">Dad's Charges</div>
-          <div class="split-half-amount" style="color:var(--blue)">${fmt(stats.dadTotal)}</div>
+          <div class="split-half-label" style="color:#555">Dad's Charges</div>
+          <div class="split-half-amount" style="color:#111">${fmt(stats.dadTotal)}</div>
           <div class="split-half-sub">${100-yoursPct}% of total · ${stats.dad.length} txns</div>
         </div>
       </div>
@@ -564,7 +564,7 @@ function renderYearOverview(year) {
   for (let m=1; m<=12; m++) {
     const txns = getMonthData(year, m);
     if (!txns.length) {
-      tiles += `<div class="month-tile no-data-tile"><div class="tile-month">${MONTHS[m-1]}</div><div class="tile-amount" style="color:var(--muted)">—</div></div>`;
+      tiles += `<div class="month-tile no-data-tile"><div class="tile-month">${MONTHS[m-1]}</div><div class="tile-amount" style="color:var(--muted2)">—</div></div>`;
     } else {
       const ms = calcStats(txns);
       const owes = Math.max(0, ms.owes);
@@ -597,22 +597,22 @@ function renderYearOverview(year) {
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-label">Year Total (Yours)</div>
-        <div class="stat-value" style="color:var(--accent)">${fmt(stats.yoursTotal)}</div>
+        <div class="stat-value" style="color:#111">${fmt(stats.yoursTotal)}</div>
         <div class="stat-sub">${avail.length} months tracked</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Year Total (Dad)</div>
-        <div class="stat-value" style="color:var(--blue)">${fmt(stats.dadTotal)}</div>
+        <div class="stat-value" style="color:#111">${fmt(stats.dadTotal)}</div>
         <div class="stat-sub">${stats.dad.length} transactions</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Paid Back</div>
-        <div class="stat-value" style="color:var(--green)">${fmt(stats.yoursPaid)}</div>
+        <div class="stat-value" style="color:#111">${fmt(stats.yoursPaid)}</div>
         <div class="stat-sub">of ${fmt(stats.yoursTotal)}</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Still Owed</div>
-        <div class="stat-value" style="color:${stats.owes>0?'var(--orange)':'var(--green)'}">${fmt(Math.max(0,stats.owes))}</div>
+        <div class="stat-value" style="color:#111">${fmt(Math.max(0,stats.owes))}</div>
         <div class="stat-sub">${stats.owes<=0?'All clear!':'remaining'}</div>
       </div>
     </div>
