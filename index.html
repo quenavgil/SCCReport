@@ -352,7 +352,7 @@ function renderTxTable(txns, title) {
   const rows = txns.map(t => {
     const color = CAT_COLORS[t.category]||'#64748b', bg = CAT_BG[t.category]||'#1a1a1a';
     const respBadge = t.yours ? `<span class="resp-badge resp-yours">YOURS</span>` : `<span class="resp-badge resp-dad">DAD</span>`;
-    const paidBadge = !t.yours ? `<span class="na-badge">—</span>` : t.paid ? `<span class="paid-badge paid-yes">PAID ✓</span>` : `<span class="paid-badge paid-no">OWES</span>`;
+    const paidBadge = !t.yours ? `<span class="na-badge">—</span>` : t.paid ? `<span class="paid-badge paid-yes">PAID ✓</span>` : `<span class="paid-badge paid-no">OWED</span>`;
     const amtColor = t.yours ? 'var(--accent)' : 'var(--muted)';
     const d = t.date.split('/');
     const dateStr = `${MONTHS[parseInt(d[0])-1]} ${parseInt(d[1])}`;
@@ -373,7 +373,7 @@ function renderTxTable(txns, title) {
     <div class="legend-key-item"><span class="resp-badge resp-yours">YOURS</span>&nbsp;Yours to pay</div>
     <div class="legend-key-item"><span class="resp-badge resp-dad">DAD</span>&nbsp;Dad pays</div>
     <div class="legend-key-item"><span class="paid-badge paid-yes">PAID ✓</span>&nbsp;Paid back</div>
-    <div class="legend-key-item"><span class="paid-badge paid-no">OWES</span>&nbsp;Still owes</div>
+    <div class="legend-key-item"><span class="paid-badge paid-no">OWED</span>&nbsp;Still owed</div>
   </div>`;
 
   return `<div class="tx-card">
