@@ -175,6 +175,17 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
 .tx-row-badges{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
 .tx-row-amount{font-family:'IBM Plex Mono',monospace;font-size:.88rem;font-weight:700;white-space:nowrap;flex-shrink:0;text-align:right;}
 
+
+/* TOTAL OWED BANNER */
+.total-owed-bar{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e5e5e5;border-radius:8px;padding:12px 18px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);flex-wrap:wrap;gap:10px;}
+.total-owed-bar-left{display:flex;align-items:center;gap:10px;}
+.total-owed-bar-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:#aaa;}
+.total-owed-bar-amount{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:700;color:#2563eb;line-height:1;margin-top:3px;}
+.total-owed-bar-right{display:flex;gap:20px;flex-wrap:wrap;}
+.total-owed-stat{text-align:right;}
+.total-owed-stat-label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.8px;color:#aaa;}
+.total-owed-stat-val{font-family:'IBM Plex Mono',monospace;font-size:.8rem;font-weight:600;color:#111;margin-top:2px;}
+
 </style>
 </head>
 <body>
@@ -187,6 +198,9 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-ser
   </div>
   <div class="card-pill">•••• •••• •••• <span>7114</span></div>
 </div>
+
+<!-- TOTAL OWED -->
+<div class="total-owed-bar" id="total-owed-bar"></div>
 
 <!-- YEAR NAV -->
 <div class="year-nav">
@@ -384,7 +398,7 @@ function renderTxTable(txns, title) {
 }
 
 // ── RENDER SUMMARY ────────────────────────────────────────────────────────────
-function renderSummary(txns, label, isYear) {
+function renderSummary(txns, label, isYear, currentMonth, currentYear) {
   const yours = txns.filter(t=>t.yours);
   const dad = txns.filter(t=>!t.yours);
   const yoursTotal = yours.reduce((s,t)=>s+t.amount,0);
@@ -396,73 +410,122 @@ function renderSummary(txns, label, isYear) {
   yours.forEach(t => { catMap[t.category] = (catMap[t.category]||0)+t.amount; });
   const cats = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
 
-  // Top category
-  if (cats.length) {
-    const [topCat, topAmt] = cats[0];
-    const topPct = Math.round(topAmt/yoursTotal*100);
-    const catEmoji = {Meals:'🍔',Travel:'✈️',Gas:'⛽',Groceries:'🛒',Subscriptions:'📱',
-      Clothing:'👕',Taxes:'🏛️',Entertainment:'🎮',Medical:'🩺',Vehicle:'🚗',
-      Postage:'📬',Home:'🏠',Other:'📦'}[topCat]||'💸';
-    items.push({type:'warn', icon:catEmoji,
-      text:`Your biggest category was <strong>${topCat}</strong> at <strong>${fmt(topAmt)}</strong> — that's ${topPct}% of everything you charged this ${isYear?'year':'month'}.`});
+  // Pull comparison data for month-over-month context
+  let prevMonthTxns = [], prevCatMap = {}, prevYoursTotal = 0;
+  if (!isYear && currentMonth && currentYear) {
+    const prevM = currentMonth === 1 ? 12 : currentMonth - 1;
+    const prevY = currentMonth === 1 ? currentYear - 1 : currentYear;
+    prevMonthTxns = getMonthData(prevY, prevM).filter(t=>t.yours);
+    prevMonthTxns.forEach(t => { prevCatMap[t.category] = (prevCatMap[t.category]||0)+t.amount; });
+    prevYoursTotal = prevMonthTxns.reduce((s,t)=>s+t.amount,0);
   }
 
-  // Biggest single charge
-  if (yours.length) {
-    const biggest = yours.reduce((a,b)=>a.amount>b.amount?a:b);
-    items.push({type:'flag', icon:'💳',
-      text:`Your single biggest charge was <strong>${fmt(biggest.amount)}</strong> at <strong>${biggest.name}</strong> on ${biggest.date}.`});
-  }
-
-  // Meals
   const mealTotal = catMap['Meals']||0;
   const mealCount = yours.filter(t=>t.category==='Meals').length;
-  if (mealTotal > 0) {
-    const avgMeal = mealTotal/mealCount;
-    let mealNote = `You spent <strong>${fmt(mealTotal)}</strong> eating out across <strong>${mealCount} visits</strong> — averaging <strong>${fmt(avgMeal)}</strong> per outing.`;
-    if (avgMeal > 60) mealNote += ' Those are some expensive meals, bud.';
-    else if (mealCount > 10) mealNote += " That's a lot of restaurants.";
-    items.push({type:'info', icon:'🍽️', text:mealNote});
-  }
-
-  // Subscriptions
   const subTotal = catMap['Subscriptions']||0;
-  if (subTotal > 0) {
-    const subCount = yours.filter(t=>t.category==='Subscriptions').length;
-    items.push({type:'info', icon:'📱',
-      text:`Subscriptions added up to <strong>${fmt(subTotal)}</strong> across ${subCount} charges. That's money leaving your account every month whether you use it or not.`});
-  }
-
-  // Entertainment
+  const subCount = yours.filter(t=>t.category==='Subscriptions').length;
   const entTotal = catMap['Entertainment']||0;
-  if (entTotal > 50) {
-    items.push({type:'warn', icon:'🎭',
-      text:`Entertainment ran <strong>${fmt(entTotal)}</strong> this ${isYear?'year':'month'}. Fun is fine — just making sure you see it.`});
-  }
-
-  // Clothing
   const clothTotal = catMap['Clothing']||0;
-  if (clothTotal > 0) {
-    items.push({type:'flag', icon:'👕',
-      text:`You put <strong>${fmt(clothTotal)}</strong> toward clothing. Looking good isn't cheap — hopefully the wardrobe justifies it.`});
-  }
-
-  // Dad's share
-  if (dadTotal > 0) {
-    const dadPct = Math.round(dadTotal/total*100);
-    items.push({type:'good', icon:'👨',
-      text:`<span class="dad-note">Dad covered <strong>${fmt(dadTotal)}</strong> of the total bill</span> (${dadPct}% of all charges) — things like gas, groceries, medical, and taxes that aren't on you.`});
-  }
-
-  // Outstanding balance
+  const travelTotal = catMap['Travel']||0;
   const yoursPaid = yours.filter(t=>t.paid).reduce((s,t)=>s+t.amount,0);
   const owes = yoursTotal - yoursPaid;
-  if (owes > 0) {
+
+  // ── MONTH-OVER-MONTH TOTAL ──
+  if (!isYear && prevYoursTotal > 0) {
+    const diff = yoursTotal - prevYoursTotal;
+    const diffPct = Math.round(Math.abs(diff)/prevYoursTotal*100);
+    const prevMonthName = MONTHS[(currentMonth===1?11:currentMonth-2)];
+    if (diff > 50) {
+      items.push({type:'warn', icon:'📈',
+        text:`You spent <strong>${fmt(diff)} more</strong> than last month (${prevMonthName} was ${fmt(prevYoursTotal)}) — that's a <strong>${diffPct}% increase</strong>. What changed?`});
+    } else if (diff < -50) {
+      items.push({type:'good', icon:'📉',
+        text:`Down <strong>${fmt(Math.abs(diff))}</strong> from ${prevMonthName}'s ${fmt(prevYoursTotal)} — a <strong>${diffPct}% drop</strong>. Good month.`});
+    } else {
+      items.push({type:'info', icon:'➡️',
+        text:`Pretty consistent with last month — ${fmt(prevYoursTotal)} in ${prevMonthName} vs <strong>${fmt(yoursTotal)}</strong> this month.`});
+    }
+  }
+
+  // ── BIGGEST SINGLE CHARGE ──
+  if (yours.length) {
+    const biggest = yours.reduce((a,b)=>a.amount>b.amount?a:b);
+    const biggestPct = Math.round(biggest.amount/yoursTotal*100);
+    let bigNote = `Biggest single charge: <strong>${fmt(biggest.amount)}</strong> at <strong>${biggest.name}</strong>`;
+    if (biggestPct > 40) bigNote += ` — that's <strong>${biggestPct}%</strong> of your entire month right there.`;
+    else bigNote += ` on ${biggest.date}.`;
+    items.push({type:'flag', icon:'💳', text:bigNote});
+  }
+
+  // ── MEALS ──
+  if (mealTotal > 0) {
+    const avgMeal = mealTotal/mealCount;
+    const prevMealTotal = prevCatMap['Meals']||0;
+    let mealNote = '';
+    if (prevMealTotal > 0 && !isYear) {
+      const mealDiff = mealTotal - prevMealTotal;
+      if (mealDiff > 30) mealNote = `Meals jumped <strong>${fmt(mealDiff)}</strong> from last month. <strong>${mealCount} restaurant visits</strong> averaging <strong>${fmt(avgMeal)}</strong> each — those add up fast.`;
+      else if (mealDiff < -30) mealNote = `You actually cut back on eating out this month — <strong>${fmt(mealTotal)}</strong> vs ${fmt(prevMealTotal)} last month. Noticed.`;
+      else mealNote = `<strong>${mealCount} restaurant visits</strong> totaling <strong>${fmt(mealTotal)}</strong>, averaging ${fmt(avgMeal)} each.`;
+    } else {
+      mealNote = `<strong>${mealCount} restaurant visits</strong> totaling <strong>${fmt(mealTotal)}</strong>`;
+      if (avgMeal > 80) mealNote += ` — averaging <strong>${fmt(avgMeal)}</strong> per meal. That's a lot for one person.`;
+      else if (avgMeal > 50) mealNote += `, averaging <strong>${fmt(avgMeal)}</strong> per outing.`;
+      else mealNote += `.`;
+    }
+    items.push({type:'info', icon:'🍔', text:mealNote});
+  }
+
+  // ── TRAVEL (only if significant) ──
+  if (travelTotal > 100) {
+    const prevTravel = prevCatMap['Travel']||0;
+    let travNote = `Travel came in at <strong>${fmt(travelTotal)}</strong> this ${isYear?'year':'month'}.`;
+    if (prevTravel === 0 && !isYear) travNote += ` No travel last month — this was a trip month.`;
+    else if (travelTotal > 400) travNote += ` That's a big one — hope it was worth it.`;
+    items.push({type:'info', icon:'✈️', text:travNote});
+  }
+
+  // ── SUBSCRIPTIONS ──
+  if (subTotal > 0) {
+    const prevSubTotal = prevCatMap['Subscriptions']||0;
+    let subNote = `<strong>${subCount} subscription charges</strong> totaling <strong>${fmt(subTotal)}</strong>.`;
+    if (subTotal > 100) subNote += ` Over $100/month in subscriptions — worth auditing what you actually use.`;
+    else if (prevSubTotal > 0 && Math.abs(subTotal-prevSubTotal) > 20 && !isYear) {
+      subNote += ` That's ${subTotal > prevSubTotal ? fmt(subTotal-prevSubTotal)+' more' : fmt(prevSubTotal-subTotal)+' less'} than last month — did something change?`;
+    }
+    items.push({type:'info', icon:'📱', text:subNote});
+  }
+
+  // ── CLOTHING ──
+  if (clothTotal > 0) {
+    const prevCloth = prevCatMap['Clothing']||0;
+    let clothNote = `<strong>${fmt(clothTotal)}</strong> on clothing`;
+    if (prevCloth > 0 && !isYear) clothNote += ` — you also spent ${fmt(prevCloth)} on clothes last month. Two months in a row.`;
+    else if (clothTotal > 150) clothNote += ` — that's a significant wardrobe investment.`;
+    else clothNote += `.`;
+    items.push({type:'flag', icon:'👕', text:clothNote});
+  }
+
+  // ── ENTERTAINMENT ──
+  if (entTotal > 50) {
+    const prevEnt = prevCatMap['Entertainment']||0;
+    let entNote = `<strong>${fmt(entTotal)}</strong> on entertainment`;
+    if (prevEnt > 50 && !isYear) entNote += ` — and ${fmt(prevEnt)} last month too. Consistent spender on fun.`;
+    else if (entTotal > 150) entNote += ` — that's a real chunk. What was that for?`;
+    else entNote += `.`;
+    items.push({type:'info', icon:'🎭', text:entNote});
+  }
+
+  // ── OUTSTANDING BALANCE ──
+  if (owes > 500) {
+    items.push({type:'warn', icon:'🔴',
+      text:`You owe <strong>${fmt(owes)}</strong> just from this ${isYear?'year':'month'} alone. That's not a small number — let's talk about getting this settled.`});
+  } else if (owes > 0) {
     items.push({type:'warn', icon:'⚠️',
-      text:`You still owe dad <strong>${fmt(owes)}</strong> from your charges this ${isYear?'year':'month'}. The sooner you settle up, the better.`});
+      text:`Still <strong>${fmt(owes)}</strong> outstanding from this ${isYear?'year':'month'}. Don't let it pile up.`});
   } else if (yoursTotal > 0) {
     items.push({type:'good', icon:'✅',
-      text:`You're all paid up for this ${isYear?'year':'month'}. Appreciate it — seriously.`});
+      text:`All paid up for ${isYear?'this year':'this month'}. That's the right move — keep it up.`});
   }
 
   const rows = items.map(i =>
@@ -515,7 +578,7 @@ function renderMonthView(year, month) {
         <div class="stat-sub">${stats.owes<=0?'All settled!':'to dad'}</div>
       </div>
     </div>
-    ${renderSummary(txns.filter(t=>t.yours||true), `${mLabel} ${year}`, false)}
+    ${renderSummary(txns, `${mLabel} ${year}`, false, month, year)}
     <div class="split-card">
       <div class="card-title">Who Pays What · ${mLabel}</div>
       <div class="split-row">
@@ -616,7 +679,7 @@ function renderYearOverview(year) {
         <div class="stat-sub">${stats.owes<=0?'All clear!':'remaining'}</div>
       </div>
     </div>
-    ${renderSummary(all, `${year} Year`, true)}
+    ${renderSummary(all, `${year} Year`, true, null, year)}
     <div class="card" style="margin-bottom:10px">
       <div class="card-title">Monthly Overview — Click a month to see details</div>
       <div class="monthly-grid">${tiles}</div>
@@ -638,9 +701,33 @@ function renderYearOverview(year) {
   `;
 }
 
+
+// ── RENDER TOTAL OWED (ALL TIME) ─────────────────────────────────────────────
+function renderTotalOwed() {
+  let allTxns = [];
+  Object.values(RAW).forEach(yr => allTxns = allTxns.concat(yr));
+  const yours = allTxns.filter(t => t.yours);
+  const yoursTotal = yours.reduce((s,t) => s+t.amount, 0);
+  const yoursPaid = yours.filter(t => t.paid).reduce((s,t) => s+t.amount, 0);
+  const totalOwed = Math.max(0, yoursTotal - yoursPaid);
+  const totalCharged = allTxns.reduce((s,t) => s+t.amount, 0);
+  const years = Object.keys(RAW).sort();
+
+  document.getElementById('total-owed-bar').innerHTML = `
+    <div class="total-owed-bar-left">
+      <div>
+        <div class="total-owed-bar-label">Total Owed to Dad · All Time</div>
+        <div class="total-owed-bar-amount">${fmt(totalOwed)}</div>
+      </div>
+    </div>
+
+  `;
+}
+
 // ── MAIN RENDER ───────────────────────────────────────────────────────────────
 function render() {
   renderMonthNav();
+  renderTotalOwed();
   const content = document.getElementById('content');
   if (currentMonth === null) {
     content.innerHTML = renderYearOverview(currentYear);
