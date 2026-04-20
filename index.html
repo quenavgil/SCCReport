@@ -755,7 +755,31 @@ function setMonth(m) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-render();
+(function initToCurrentMonth() {
+  const now = new Date();
+  const todayYear = now.getFullYear();
+  const todayMonth = now.getMonth() + 1; // 1-indexed
+
+  // Set year if we have data for it
+  if (RAW[String(todayYear)]) {
+    currentYear = todayYear;
+    // Update year tab UI
+    document.querySelectorAll('.ytab').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.textContent) === todayYear);
+    });
+  }
+
+  // Set month if we have data for current month in that year
+  const avail = getAvailableMonths(currentYear);
+  if (avail.includes(todayMonth)) {
+    currentMonth = todayMonth;
+  } else {
+    // Fall back to most recent available month
+    currentMonth = avail.length ? avail[avail.length - 1] : null;
+  }
+
+  render();
+})();
 </script>
 </body>
 </html>
